@@ -1,0 +1,30 @@
+{
+  "$schema": "http://json.schemastore.org/package",
+  "name": "receipt-processor",
+  "version": "1.0.0",
+  "description": "",
+  "author": "Keith Wade <keith@keithwade.com>",
+  "license": "MIT",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "start": "node dist/server.js",
+    "build": "tsc",
+    "dev": "tsx src/server.ts",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "format": "npm run format:check -- --write",
+    "format:check": "prettier . --list-different",
+    "lint": "eslint src",
+    "lint:fix": "npm run lint -- --fix"
+  },
+  "devDependencies": {
+    "@tsconfig/node20": "^20.1.2",
+    "@types/node": "^20.11.16",
+    "@typescript-eslint/eslint-plugin": "^6.20.0",
+    "@typescript-eslint/parser": "^6.20.0",
+    "eslint": "^8.56.0",
+    "prettier": "^3.2.4",
+    "tsx": "^4.7.0",
+    "typescript": "^5.3.3"
+  }
+}
