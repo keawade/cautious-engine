@@ -1,4 +1,3 @@
-import { add, getDate, getHours } from "date-fns";
 import { Receipt } from "../schema.js";
 
 const isAlphaNumeric = (str: string) => {
@@ -12,6 +11,10 @@ const isAlphaNumeric = (str: string) => {
   }
   return true;
 };
+
+// If considering expanding this more it might be worth considering extracting
+// each case out into their own functions so they can each be tested in full
+// isolation
 
 export const processReceipt = (receipt: Receipt): number => {
   let points = 0;
@@ -38,34 +41,33 @@ export const processReceipt = (receipt: Receipt): number => {
   // the price by 0.2 and round up to the nearest integer. The result is the
   // number of points earned.
   for (const item of receipt.items) {
-    if (item.shortDescription.trim().length % 3 === 0) {
+    const trimmed = item.shortDescription.trim();
+    // The !== 0 check here is needed to narrow to multiples of three rather
+    // than just cases where % 3 => 0 which includes 0 % 3 which is not a
+    // multiple of 3.
+    //
+    // _Technically_ it doesn't matter currently because what we do inside this
+    // case is to multiply by the trimmed length which, when it is 0, means we
+    // get a correct value even without the !== 0 check.
+    //
+    // I'm leaving it in anyways because if we ever change the logic to not
+    // multiply by the trimmed length we'll immediately see a bug here and it
+    // may not be immediately obvious to the developer working on it unless
+    // they're familiar with what has been described here.
+    if (trimmed.length !== 0 && trimmed.length % 3 === 0) {
       points += Math.ceil(item.price * 0.2);
     }
   }
 
   // 6 points if the day in the purchase date is odd.
-  if (getDate(receipt.purchaseDateTime) % 2 === 1) {
+  if (Number(receipt.purchaseDate.split("-")[2]) % 2 === 1) {
     points += 6;
   }
 
   // 10 points if the time of purchase is after 2:00pm and before 4:00pm.
   if (
-    // Super conflicted on this. On the one hand, converting to a Date object
-    // earlier makes several other things in this service feel a lot nicer.
-    // However this logic in particular got pretty hairy due to timezone
-    // offsets.
-    //
-    // See https://xkcd.com/2867/ for vibes.
-    getHours(
-      add(receipt.purchaseDateTime, {
-        minutes: receipt.purchaseDateTime.getTimezoneOffset(),
-      }),
-    ) >= 14 &&
-    getHours(
-      add(receipt.purchaseDateTime, {
-        minutes: receipt.purchaseDateTime.getTimezoneOffset(),
-      }),
-    ) < 16
+    Number(receipt.purchaseTime.split(":")[0]) >= 14 &&
+    Number(receipt.purchaseTime.split(":")[0]) < 16
   ) {
     points += 10;
   }

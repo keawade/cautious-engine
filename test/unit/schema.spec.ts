@@ -22,7 +22,8 @@ describe("schema", () => {
       expect(actual.success).toBe(true);
       expect((actual as { data: Receipt }).data).toStrictEqual({
         retailer: "Target",
-        purchaseDateTime: new Date("2022-01-02T13:13:00.000Z"),
+        purchaseDate: "2022-01-02",
+        purchaseTime: "13:13",
         total: 1.25,
         items: [{ shortDescription: "Pepsi - 12-oz", price: 1.25 }],
       });
@@ -45,7 +46,8 @@ describe("schema", () => {
       expect(actual.success).toBe(true);
       expect((actual as { data: Receipt }).data).toStrictEqual({
         retailer: "Walgreens",
-        purchaseDateTime: new Date("2022-01-02T08:13:00.000Z"),
+        purchaseDate: "2022-01-02",
+        purchaseTime: "08:13",
         total: 2.65,
         items: [
           { shortDescription: "Pepsi - 12-oz", price: 1.25 },
@@ -74,7 +76,8 @@ describe("schema", () => {
       expect(actual.success).toBe(true);
       expect((actual as { data: Receipt }).data).toStrictEqual({
         retailer: "Target",
-        purchaseDateTime: new Date("2022-01-01T13:01:00.000Z"),
+        purchaseDate: "2022-01-01",
+        purchaseTime: "13:01",
         total: 35.35,
         items: [
           { shortDescription: "Mountain Dew 12PK", price: 6.49 },
@@ -105,7 +108,8 @@ describe("schema", () => {
       expect(actual.success).toBe(true);
       expect((actual as { data: Receipt }).data).toStrictEqual({
         retailer: "M&M Corner Market",
-        purchaseDateTime: new Date("2022-03-20T14:33:00.000Z"),
+        purchaseDate: "2022-03-20",
+        purchaseTime: "14:33",
         total: 9,
         items: [
           { shortDescription: "Gatorade", price: 2.25 },

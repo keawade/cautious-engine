@@ -27,23 +27,27 @@ export const receiptSchema = z
       .refine((timeStr) => isValid(parse(timeStr, "HH:mm", referenceDate)), {
         message: "Invalid time.",
       }),
+    // TODO: Ask if should disallow totals that don't equal the sum of items
+    // Note: Disallowing totals that don't equal the sum of items would make a
+    // mess of some existing unit tests that depend on the current flexibility
+    // to isolate point calculation cases
+    // TODO: Ask if should disallow negative totals
     total: z
       .string()
       .regex(numberWithTwoDecimalsRegex, { message: "Invalid total." }),
     items: z.array(
       z.object({
         shortDescription: z.string(),
+        // TODO: Ask if should disallow negative prices
         price: z
           .string()
           .regex(numberWithTwoDecimalsRegex, { message: "Invalid price." }),
       }),
     ),
   })
-  .transform(({ purchaseDate, purchaseTime, ...receipt }) => ({
+  .transform((receipt) => ({
     ...receipt,
     total: Number(receipt.total),
-    // That's enough of having a split timestamp, thank you.
-    purchaseDateTime: new Date(`${purchaseDate}T${purchaseTime}:00.000Z`),
     items: receipt.items.map((item) => ({
       ...item,
       price: Number(item.price),
