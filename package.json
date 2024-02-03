@@ -8,14 +8,20 @@
   "type": "module",
   "main": "index.js",
   "scripts": {
-    "start": "node dist/server.js",
+    "start": "node dist/node.js",
     "build": "tsc",
-    "dev": "tsx src/server.ts",
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "tsc-watch --onSuccess 'npm run start'",
     "format": "npm run format:check -- --write",
     "format:check": "prettier . --list-different",
     "lint": "eslint src",
-    "lint:fix": "npm run lint -- --fix"
+    "lint:fix": "npm run lint -- --fix",
+    "test": "vitest"
+  },
+  "dependencies": {
+    "@hono/node-server": "^1.7.0",
+    "date-fns": "^3.3.1",
+    "hono": "^3.12.10",
+    "zod": "^3.22.4"
   },
   "devDependencies": {
     "@tsconfig/node20": "^20.1.2",
@@ -23,8 +29,10 @@
     "@typescript-eslint/eslint-plugin": "^6.20.0",
     "@typescript-eslint/parser": "^6.20.0",
     "eslint": "^8.56.0",
+    "nodemon": "^3.0.3",
     "prettier": "^3.2.4",
-    "tsx": "^4.7.0",
-    "typescript": "^5.3.3"
+    "tsc-watch": "^6.0.4",
+    "typescript": "^5.3.3",
+    "vitest": "^1.2.2"
   }
 }
