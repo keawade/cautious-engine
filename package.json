@@ -9,13 +9,16 @@
   "main": "index.js",
   "scripts": {
     "start": "node dist/node.js",
-    "build": "tsc",
+    "build": "rm -rf dist/ && tsc",
+    "build:docker": "docker build . -t receipt-processor:1",
+    "run:docker": "docker run -d -p 3000:3000 receipt-processor:1",
     "dev": "tsc-watch --onSuccess 'npm run start'",
     "format": "npm run format:check -- --write",
     "format:check": "prettier . --list-different",
     "lint": "eslint src",
     "lint:fix": "npm run lint -- --fix",
-    "test": "vitest"
+    "test": "vitest",
+    "test:integration": "vitest --config vitest.integration.config.ts"
   },
   "dependencies": {
     "@hono/node-server": "^1.7.0",
@@ -28,6 +31,7 @@
     "@types/node": "^20.11.16",
     "@typescript-eslint/eslint-plugin": "^6.20.0",
     "@typescript-eslint/parser": "^6.20.0",
+    "axios": "^1.6.7",
     "eslint": "^8.56.0",
     "nodemon": "^3.0.3",
     "prettier": "^3.2.4",

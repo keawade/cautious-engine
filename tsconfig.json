@@ -6,4 +6,7 @@
     "module": "ESNext",
     "moduleResolution": "Bundler",
   },
+  "include": [
+    "src"
+  ]
 }
