@@ -25,12 +25,12 @@ export const processReceipt = (receipt: Receipt): number => {
     .reduce((acc, curr) => (isAlphaNumeric(curr) ? acc + 1 : acc), 0);
 
   // 50 points if the total is a round dollar amount with no cents.
-  if (receipt.total % 1 === 0) {
+  if (Number(receipt.total) % 1 === 0) {
     points += 50;
   }
 
   // 25 points if the total is a multiple of 0.25.
-  if (receipt.total % 0.25 === 0) {
+  if (Number(receipt.total) % 0.25 === 0) {
     points += 25;
   }
 
@@ -55,7 +55,7 @@ export const processReceipt = (receipt: Receipt): number => {
     // may not be immediately obvious to the developer working on it unless
     // they're familiar with what has been described here.
     if (trimmed.length !== 0 && trimmed.length % 3 === 0) {
-      points += Math.ceil(item.price * 0.2);
+      points += Math.ceil(Number(item.price) * 0.2);
     }
   }
 

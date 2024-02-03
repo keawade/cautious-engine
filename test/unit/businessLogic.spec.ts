@@ -8,13 +8,13 @@ describe("processReceipt", () => {
       retailer: "Target",
       purchaseDate: "2022-01-01",
       purchaseTime: "13:01",
-      total: 35.35,
+      total: "35.35",
       items: [
-        { shortDescription: "Mountain Dew 12PK", price: 6.49 },
-        { shortDescription: "Emils Cheese Pizza", price: 12.25 },
-        { shortDescription: "Knorr Creamy Chicken", price: 1.26 },
-        { shortDescription: "Doritos Nacho Cheese", price: 3.35 },
-        { shortDescription: "   Klarbrunn 12-PK 12 FL OZ  ", price: 12 },
+        { shortDescription: "Mountain Dew 12PK", price: "6.49" },
+        { shortDescription: "Emils Cheese Pizza", price: "12.25" },
+        { shortDescription: "Knorr Creamy Chicken", price: "1.26" },
+        { shortDescription: "Doritos Nacho Cheese", price: "3.35" },
+        { shortDescription: "   Klarbrunn 12-PK 12 FL OZ  ", price: "12.00" },
       ],
     };
 
@@ -28,12 +28,12 @@ describe("processReceipt", () => {
       retailer: "M&M Corner Market",
       purchaseDate: "2022-03-20",
       purchaseTime: "14:33",
-      total: 9,
+      total: "9.00",
       items: [
-        { shortDescription: "Gatorade", price: 2.25 },
-        { shortDescription: "Gatorade", price: 2.25 },
-        { shortDescription: "Gatorade", price: 2.25 },
-        { shortDescription: "Gatorade", price: 2.25 },
+        { shortDescription: "Gatorade", price: "2.25" },
+        { shortDescription: "Gatorade", price: "2.25" },
+        { shortDescription: "Gatorade", price: "2.25" },
+        { shortDescription: "Gatorade", price: "2.25" },
       ],
     };
 
@@ -58,7 +58,7 @@ describe("processReceipt", () => {
           retailer,
           purchaseDate: "2022-01-02",
           purchaseTime: "00:00",
-          total: 0.1,
+          total: "0.10",
           items: [],
         };
 
@@ -66,7 +66,7 @@ describe("processReceipt", () => {
       },
     );
 
-    it.each([1, 2, 3, 4, 5, 100, 1000, 99999999])(
+    it.each(["1", "2", "3", "4", "5", "100", "1000", "99999999"])(
       "should add 50 points if the total is a round number with no cents",
       (total) => {
         const fixture = {
@@ -82,7 +82,7 @@ describe("processReceipt", () => {
       },
     );
 
-    it.each([0.25, 0.5, 0.75, 999999.25, 99999999.75])(
+    it.each(["0.25", "0.5", "0.75", "999999.25", "99999999.75"])(
       "should add 25 points if the total is a multiple of 0.25",
       (total) => {
         const fixture = {
@@ -114,7 +114,7 @@ describe("processReceipt", () => {
           retailer: "",
           purchaseDate: "2022-01-02",
           purchaseTime: "00:00",
-          total: 0.1,
+          total: "0.10",
           items: new Array(itemCount).fill({
             shortDescription: "",
             price: 0,
@@ -126,15 +126,15 @@ describe("processReceipt", () => {
     );
 
     it.each([
-      ["Sup", 1, 1],
-      ["       Sup       \t\t", 1, 1],
-      ["This is only a test!!", 1, 1],
-      ["Sup", 6, 2],
-      ["       Sup       \t\t", 6, 2],
-      ["This is only a test!!", 6, 2],
-      ["Sup", 100, 20],
-      ["       Sup       \t\t", 100, 20],
-      ["This is only a test!!", 100, 20],
+      ["Sup", "1.00", 1],
+      ["       Sup       \t\t", "1.00", 1],
+      ["This is only a test!!", "1.00", 1],
+      ["Sup", "6.00", 2],
+      ["       Sup       \t\t", "6.00", 2],
+      ["This is only a test!!", "6.00", 2],
+      ["Sup", "100.00", 20],
+      ["       Sup       \t\t", "100.00", 20],
+      ["This is only a test!!", "100.00", 20],
     ])(
       "should add `price * 0.2` rounded up if trimmed length of item description is a multiple of 3",
       (shortDescription, price, points) => {
@@ -142,7 +142,7 @@ describe("processReceipt", () => {
           retailer: "",
           purchaseDate: `2022-01-02`,
           purchaseTime: "00:00",
-          total: 0.1,
+          total: "0.10",
           items: [{ shortDescription, price }],
         };
 
@@ -157,7 +157,7 @@ describe("processReceipt", () => {
           retailer: "",
           purchaseDate: `2022-01-${day}`,
           purchaseTime: "00:00",
-          total: 0.1,
+          total: "0.10",
           items: [],
         };
 
@@ -172,7 +172,7 @@ describe("processReceipt", () => {
           retailer: "",
           purchaseDate: `2022-01-${day}`,
           purchaseTime: "00:00",
-          total: 0.1,
+          total: "0.10",
           items: [],
         };
 
@@ -187,7 +187,7 @@ describe("processReceipt", () => {
           retailer: "",
           purchaseDate: `2022-01-02`,
           purchaseTime,
-          total: 0.1,
+          total: "0.10",
           items: [],
         };
 
@@ -202,7 +202,7 @@ describe("processReceipt", () => {
           retailer: "",
           purchaseDate: `2022-01-02`,
           purchaseTime,
-          total: 0.1,
+          total: "0.10",
           items: [],
         };
 

@@ -11,7 +11,7 @@
     "start": "node dist/node.js",
     "build": "rm -rf dist/ && tsc",
     "build:docker": "docker build . -t receipt-processor:1",
-    "run:docker": "docker run -d -p 3000:3000 receipt-processor:1",
+    "run:docker": "docker run -p 3000:3000 receipt-processor:1",
     "dev": "tsc-watch --onSuccess 'npm run start'",
     "format": "npm run format:check -- --write",
     "format:check": "prettier . --list-different",
@@ -22,6 +22,7 @@
   },
   "dependencies": {
     "@hono/node-server": "^1.7.0",
+    "@hono/zod-validator": "^0.1.11",
     "date-fns": "^3.3.1",
     "hono": "^3.12.10",
     "zod": "^3.22.4"
