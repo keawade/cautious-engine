@@ -2,7 +2,7 @@ import { zValidator } from "@hono/zod-validator";
 import { isValid, parse, set } from "date-fns";
 import { z } from "zod";
 
-export const numberWithTwoDecimalsRegex = /^[0-9]+\.[0-9]{2}$/;
+export const numberWithTwoDecimalsRegex = /^\d+\.\d{2}$/;
 
 const referenceDate = set(new Date(), {
   year: 2024,
