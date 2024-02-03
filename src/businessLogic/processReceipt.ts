@@ -1,4 +1,4 @@
-import { getDate } from "date-fns";
+import { add, getDate, getHours } from "date-fns";
 import { Receipt } from "../schema.js";
 
 const isAlphaNumeric = (str: string) => {
@@ -22,7 +22,7 @@ export const processReceipt = (receipt: Receipt): number => {
     .reduce((acc, curr) => (isAlphaNumeric(curr) ? acc + 1 : acc), 0);
 
   // 50 points if the total is a round dollar amount with no cents.
-  if (receipt.total === Math.floor(receipt.total)) {
+  if (receipt.total % 1 === 0) {
     points += 50;
   }
 
@@ -49,6 +49,26 @@ export const processReceipt = (receipt: Receipt): number => {
   }
 
   // 10 points if the time of purchase is after 2:00pm and before 4:00pm.
+  if (
+    // Super conflicted on this. On the one hand, converting to a Date object
+    // earlier makes several other things in this service feel a lot nicer.
+    // However this logic in particular got pretty hairy due to timezone
+    // offsets.
+    //
+    // See https://xkcd.com/2867/ for vibes.
+    getHours(
+      add(receipt.purchaseDateTime, {
+        minutes: receipt.purchaseDateTime.getTimezoneOffset(),
+      }),
+    ) >= 14 &&
+    getHours(
+      add(receipt.purchaseDateTime, {
+        minutes: receipt.purchaseDateTime.getTimezoneOffset(),
+      }),
+    ) < 16
+  ) {
+    points += 10;
+  }
 
   return points;
 };
