@@ -29,14 +29,15 @@ describe("Receipt processor service", () => {
         retailer: "Target",
         purchaseDate: "2022-01-02",
         purchaseTime: "13:13",
-        total: 1.25,
-        items: [{ shortDescription: "Pepsi - 12-oz", price: 1.25 }],
+        total: "1.25",
+        items: [{ shortDescription: "Pepsi - 12-oz", price: "1.25" }],
       });
     });
 
     it("should return 404 if receipt is not found", async () => {
+      const id = "00000000-0000-0000-0000-000000000000";
       try {
-        await axiosClient.get("/receipts/does-not-exist");
+        await axiosClient.get(`/receipts/${id}`);
         throw "should have thrown an error";
       } catch (err) {
         expect(err).toBeInstanceOf(AxiosError);
@@ -60,13 +61,13 @@ describe("Receipt processor service", () => {
         `/receipts/${id}/points`,
       );
 
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       expect(actual).toStrictEqual({ points: expect.any(Number) });
     });
 
     it("should return 404 if receipt is not found", async () => {
+      const id = "00000000-0000-0000-0000-000000000000";
       try {
-        await axiosClient.get("/receipts/does-not-exist/points");
+        await axiosClient.get(`/receipts/${id}/points`);
         throw "should have thrown an error";
       } catch (err) {
         expect(err).toBeInstanceOf(AxiosError);
@@ -84,7 +85,6 @@ describe("Receipt processor service", () => {
         simpleReceiptFixture,
       );
 
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       expect(actual).toStrictEqual({ id: expect.any(String) });
     });
 
@@ -137,6 +137,23 @@ describe("Receipt processor service", () => {
         } = await axiosClient.get<{ points: number }>(`/receipts/${id}/points`);
 
         expect(points).toBe(109);
+      });
+
+      it("should return 400 if invalid input is provided", async () => {
+        try {
+          await axiosClient.post<{ id: string }>("/receipts/process", {
+            howdy: "I am invalid data!",
+          });
+          throw "should have thrown an error";
+        } catch (err) {
+          expect(err).toBeInstanceOf(AxiosError);
+          const axiosErr = err as AxiosError;
+          expect(axiosErr.response?.status).toBe(400);
+          expect(axiosErr.response?.data).toStrictEqual({
+            error: "Invalid receipt.",
+            info: expect.any(Object),
+          });
+        }
       });
     });
   });
