@@ -29,7 +29,7 @@ app.post("/receipts/process", async (c) => {
 
   storage.set(id, { receipt: receipt.data, points });
 
-  return c.json({ id, points });
+  return c.json({ id });
 });
 
 app.get("/receipts/:id", (c) => {
