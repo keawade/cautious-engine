@@ -22,7 +22,7 @@ jobs:
         run: npm run lint
 
       - name: Run unit tests
-        run: npm run test
+        run: npm run test -- --reporter=verbose
 
   integration-test:
     runs-on: ubuntu-latest
@@ -43,7 +43,7 @@ jobs:
         run: docker run -d --name receipt-processor -p 3000:3000 receipt-processor:1
 
       - name: Run integration tests
-        run: npm run test:integration
+        run: npm run test:integration -- --reporter=verbose
 
       - name: Stop docker container
         if: always()
