@@ -65,3 +65,12 @@ Unit tests can be run by running `npm run test`.
 
 Integration tests can be run by running `npm run test:integration` after
 starting a server either on bare metal or in Docker.
+
+## Continuous integration (CI)
+
+CI is configured to run through Github Workflows. The workflows run formatting
+checks, linter checks, unit tests, and integration tests.
+
+The CI runs can be found [on Github under the Actions tab][gh-actions].
+
+[gh-actions]: https://github.com/keawade/cautious-engine/actions
